@@ -2,16 +2,17 @@
   <div class="home">
     <TodoForm :key="myKey" :is-show-all="isShowAll" @create="addNewTodo" @show-all="setShowAll" />
 
-    <div class="row">
+    <div v-if="todoList.length" class="row">
       <transition-group name="flip-list" tag="ul" class="list-group list-group-flush my-3 pe-0">
-        <TodoItem v-for="item in filteredTodos" :key="item.id" :item="item" />
+        <TodoItem v-for="item in todoList" :key="item.id" :item="item" />
       </transition-group>
     </div>
+    <p v-else class="text-muted py-5 text-center">No Data :)</p>
   </div>
 </template>
 
 <script>
-import { randomId } from '@/utils';
+import { mapActions, mapGetters } from 'vuex';
 import TodoForm from '@/components/home/TodoForm.vue';
 import TodoItem from '@/components/home/TodoItem.vue';
 
@@ -26,29 +27,22 @@ export default {
   data() {
     return {
       isShowAll: true,
-      todos: [],
       myKey: 1,
     };
   },
 
   computed: {
-    filteredTodos() {
-      return this.isShowAll ? this.todos : this.todos.filter((item) => !item.done);
-    },
-  },
+    ...mapGetters(['filteredTodos']),
 
-  created() {
-    this.todos = [
-      { id: randomId(), text: 'Learn Vue.js', done: true },
-      { id: randomId(), text: 'Learn Vuex v2', done: false },
-      { id: randomId(), text: 'Learn Vue Router', done: false },
-    ];
+    todoList() {
+      return this.isShowAll
+        ? this.filteredTodos
+        : this.filteredTodos.filter((item) => !item.done);
+    },
   },
 
   methods: {
-    addNewTodo(newTodo) {
-      this.todos.unshift(newTodo);
-    },
+    ...mapActions(['addNewTodo']),
 
     setShowAll(value) {
       this.isShowAll = value;

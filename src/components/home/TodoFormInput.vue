@@ -23,10 +23,6 @@ export default {
     };
   },
 
-  created() {
-    console.log('created'); // eslint-disable-line
-  },
-
   methods: {
     addNewTodo() {
       this.$emit('create', {

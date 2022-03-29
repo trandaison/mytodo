@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div class="col-md-6">
-      <TodoFormInput v-if="enableInput" />
+      <TodoFormInput v-if="enableInput" v-on="$listeners" />
       <button v-else class="btn btn-outline-success" @click="showInput">Create</button>
     </div>
     <div class="col-md-6">
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-const TodoFormInput = () => import(/* webpackChunkName: "TodoFormInput" */ './TodoFormInput.vue');
+import TodoFormInput from './TodoFormInput.vue';
 
 export default {
   name: 'TodoForm',
@@ -50,8 +50,8 @@ export default {
 
     async showInput() {
       this.enableInput = true;
-      await this.$nextTick();
-      this.$refs.inputTodoRef.focus();
+      // await this.$nextTick();
+      // this.$refs.inputTodoRef.focus();
     },
   },
 };

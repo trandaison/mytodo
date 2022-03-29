@@ -27,7 +27,7 @@
           </li>
         </ul>
         <form class="d-flex header-search">
-          <input type="search" class="form-control" placeholder="Search..." />
+          <input v-model="search" type="search" class="form-control" placeholder="Search..." />
           <button type="submit" class="btn btn-success">
             <i class="fa fa-search"></i>
           </button>
@@ -40,5 +40,16 @@
 <script>
 export default {
   name: 'HeaderBar',
+
+  computed: {
+    search: {
+      get() {
+        return this.$store.state.search;
+      },
+      set(value) {
+        this.$store.dispatch('setSearch', value);
+      },
+    },
+  },
 };
 </script>
